@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>คุณมีจดหมายฉบับหนึ่ง ✉️</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--bg:#fff6e5;--card:#fffdf8;--ink:#6b4a3a;--pink:#ffb3c7;--peach:#ffd3b0;--mint:#bfe8d4;--lav:#d9ccff;--red:#d9455a;--soft:#ffe9d2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2b2321;--card:#3a2f2b;--ink:#ffeedd;--pink:#d98aa3;--peach:#c99872;--mint:#6fae93;--lav:#8f80c9;--soft:#4a3b35;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2b2321;--card:#3a2f2b;--ink:#ffeedd;--pink:#d98aa3;--peach:#c99872;--mint:#6fae93;--lav:#8f80c9;--soft:#4a3b35;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:'Mali','Sarabun','Noto Sans Thai',sans-serif;overflow-x:hidden}
+.s{display:none;min-height:100vh;padding:28px 20px 70px;max-width:520px;margin:0 auto;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.s.on{display:flex;animation:in .5s both}
+@keyframes in{from{opacity:0;transform:translateY(18px) scale(.97)}}
+h1{font-size:1.6rem;margin:0}p{margin:0;line-height:1.6}
+.paper{background:var(--card);border-radius:24px;padding:24px 20px;width:100%;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+/* envelope */
+.env{position:relative;width:290px;height:200px;cursor:pointer;animation:wig 2.6s ease-in-out infinite}
+@keyframes wig{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg) translateY(-6px)}}
+.env .body{position:absolute;inset:0;background:#fff;border-radius:10px;box-shadow:0 8px 0 rgba(0,0,0,.08);z-index:2;clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%)}
+.env .back{position:absolute;inset:0;background:#f1e8dc;border-radius:10px}
+.env .flap{position:absolute;left:0;top:0;width:100%;height:105px;background:#fff;transform-origin:top;border-radius:10px 10px 0 0;clip-path:polygon(0 0,100% 0,50% 100%);z-index:3;transition:transform .7s,z-index 0s .35s;box-shadow:inset 0 -4px 0 #eee}
+.env .let{position:absolute;left:16px;right:16px;top:14px;height:150px;background:#fffdf4;border-radius:6px;z-index:1;transition:transform .8s .35s;padding:14px;font-size:.9rem;border:2px dashed var(--pink)}
+.seal{position:absolute;left:50%;top:84px;margin:-23px 0 0 -23px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f0687a,var(--red));z-index:4;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;box-shadow:0 3px 0 rgba(0,0,0,.2);transition:opacity .3s}
+.env.open{animation:none}.env.open .flap{transform:rotateX(180deg);z-index:0}.env.open .let{transform:translateY(-70px)}.env.open .seal{opacity:0}
+/* inputs */
+input[type=text]{width:100%;padding:14px 16px;border:3px solid var(--pink);border-radius:18px;font:inherit;font-size:1.1rem;text-align:center;background:var(--card);color:var(--ink);outline:0}
+.btn{padding:12px 26px;border:0;border-radius:999px;background:var(--pink);color:#5a2a38;font:inherit;font-weight:700;font-size:1rem;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.12);transition:transform .15s}
+.btn:hover{transform:translateY(-3px) rotate(-1.5deg)}.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.btn.alt{background:var(--lav)}.btn.mint{background:var(--mint)}.btn.peach{background:var(--peach)}
+.grp{width:100%;text-align:left;margin:6px 0 4px}
+.grp b{display:block;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 14px;border:2px solid transparent;border-radius:999px;background:var(--soft);color:var(--ink);font:inherit;cursor:pointer;transition:transform .15s}
+.chip:active{transform:scale(.92)}.chip.sel{background:var(--pink);border-color:var(--red);transform:scale(1.06);font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;width:100%;min-height:150px}
+#bigYes{transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+#noBtn{transition:transform .35s,opacity .35s}
+.big{font-size:4rem;min-height:5rem;line-height:1.2}
+#run{position:fixed;z-index:20;transition:left .25s,top .25s}
+.msg{min-height:3em;font-weight:600}
+.modal{position:fixed;inset:0;background:rgba(80,40,30,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal.on{display:flex}
+.modal .paper{max-width:360px;animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.conf{position:fixed;top:-30px;z-index:60;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+.hist{width:100%;text-align:left}
+.hist .it{background:var(--card);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 4px 0 rgba(0,0,0,.06);font-size:.92rem}
+.hist .it b{color:var(--red)}
+.hist .it div{padding:2px 0;border-bottom:1px dotted var(--soft)}
+.fab{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:10;width:48px;height:48px;border-radius:50%;border:0;background:var(--card);color:var(--ink);font-size:22px;box-shadow:0 4px 0 rgba(0,0,0,.12);cursor:pointer}
+#qrBox{background:#fff;padding:14px;border-radius:16px;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<!-- 0 จดหมาย -->
+<section class="s on" id="s0">
+  <p>📮 คุณมีจดหมายที่ยังไม่ได้รับ<br>แตะที่จดหมายเพื่อเปิดอ่านนะ</p>
+  <div class="env" id="env"><div class="back"></div><div class="let">ถึงคุณ…<br>มีเรื่องอยากบอก 💌</div><div class="body"></div><div class="flap"></div><div class="seal">❤</div></div>
+</section>
+<!-- 1 ชื่อ -->
+<section class="s" id="s1">
+  <div class="paper"><h1>ทำความรู้จักกันหน่อยนะ 🌼</h1><p style="margin:10px 0 16px">ก่อนอื่น เราเรียกคุณว่าอะไรดี?</p>
+  <input type="text" id="nameIn" placeholder="พิมพ์ชื่อหรือชื่อเล่น" maxlength="30" autocomplete="off"></div>
+  <button class="btn" id="n1">ต่อไป →</button>
+</section>
+<!-- 2 ความชอบ -->
+<section class="s" id="s2">
+  <div class="paper"><h1 id="h2">เลือกสิ่งที่คุณชอบ 🍰</h1><div id="prefs"></div></div>
+  <button class="btn" id="n2">ต่อไป →</button>
+</section>
+<!-- 3 อยากรู้จักไหม -->
+<section class="s" id="s3">
+  <div class="paper"><h1 id="h3">อยากรู้จักเราไหม? 👀</h1><p class="msg" id="m3"></p></div>
+  <div class="row" id="r3">
+    <button class="btn mint" id="bigYes">อยากรู้จัก 🥰</button>
+    <button class="btn alt" id="maybe">ยังงงๆ อยู่ 🤔</button>
+    <button class="btn peach" id="bf">มีแฟนแล้ว 💍</button>
+    <button class="btn" id="noK" style="background:#e9d9cf">ไม่อยาก</button>
+  </div>
+</section>
+<!-- 3b จบ -->
+<section class="s" id="s3b">
+  <div class="big">🌷</div>
+  <div class="paper"><h1>ขอบคุณที่ตอบตรงๆ นะ</h1><p style="margin-top:10px">ขอให้มีความสุขมากๆ เลยนะ 💛<br>แล้วเจอกันเมื่อมีโอกาสน้า</p></div>
+</section>
+<!-- 4 ผ้าคาด -->
+<section class="s" id="s4">
+  <div class="paper"><h1>อยากแลกผ้าคาดกันไหม? 🎀</h1><p class="msg" id="m4" style="margin-top:8px"></p></div>
+  <div class="big" id="em4">🥹</div>
+  <div class="row" id="r4" style="min-height:70px">
+    <button class="btn mint" id="yes">Yes 😊</button>
+    <button class="btn" id="no" style="background:#e9d9cf">No way</button>
+  </div>
+</section>
+<!-- ประวัติ -->
+<section class="s" id="sh">
+  <h1>📖 คำตอบที่เคยกดไว้</h1>
+  <p style="font-size:.85rem;opacity:.8">เก็บไว้ในเครื่องนี้ ส่งต่อให้เจ้าของจดหมายได้ด้วยปุ่มด้านล่าง</p>
+  <div class="hist" id="hist"></div>
+  <button class="btn" id="share">📤 ส่งคำตอบให้เจ้าของจดหมาย</button>
+  <button class="btn alt" id="back">← กลับ</button>
+</section>
+<!-- QR -->
+<section class="s" id="sq">
+  <h1>📱 สแกนเพื่อเปิดจดหมาย</h1>
+  <div id="qrBox"></div>
+  <p style="font-size:.85rem;opacity:.8">ปริ้นหรือโชว์ QR นี้ให้เพื่อนสแกนได้เลย</p>
+</section>
+
+<button class="fab" id="fab" title="ดูคำตอบย้อนหลัง">📖</button>
+<button class="btn" id="run" style="display:none;background:#e9d9cf">No way</button>
+<div class="modal" id="modal"><div class="paper"><div class="big">🎉</div><h1>เย้! แลกผ้าคาดกันแล้วนะ 🎀</h1><p style="margin:10px 0 16px" id="win"></p><button class="btn mint" id="seeAns">ดูคำตอบของฉัน 📖</button></div></div>
+
+<script>
+var KEY="letter_sessions_v1",PREFS=[
+ ["🍜 อาหารที่ชอบ",["ก๋วยเตี๋ยว","ส้มตำ","ขนมหวาน","ชาบู"]],
+ ["🧋 เครื่องดื่ม",["ชาไทย","กาแฟ","ชาเขียว","น้ำเปล่า"]],
+ ["🐾 สัตว์ที่ชอบ",["แมว","หมา","กระต่าย","ไม่เลี้ยงเลย"]],
+ ["🌈 วันหยุดชอบ",["นอนบ้าน","เที่ยวทะเล","ขึ้นเขา","ช้อปปิ้ง"]]
+];
+var $=function(i){return document.getElementById(i)};
+var ses={id:Date.now(),time:new Date().toLocaleString("th-TH"),name:"",log:[]};
+var all=[];try{all=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){}
+function save(){try{var a=all.filter(function(x){return x.id!==ses.id});a.push(ses);all=a;localStorage.setItem(KEY,JSON.stringify(a))}catch(e){}}
+function log(q,a){ses.log=ses.log.filter(function(l){return l[0]!==q||q.indexOf("(ครั้ง")>-1});ses.log.push([q,a]);save()}
+var cur="s0";
+function go(id){cur=id;document.querySelectorAll(".s").forEach(function(s){s.classList.remove("on")});$(id).classList.add("on");scrollTo(0,0);$("fab").style.display=(id==="sh"||id==="sq")?"none":"block"}
+
+// จดหมาย
+$("env").onclick=function(){$("env").classList.add("open");setTimeout(function(){go("s1");$("nameIn").focus()},1300)};
+// ชื่อ
+function nm(){ses.name=$("nameIn").value.trim();if(!ses.name){$("nameIn").style.borderColor="#d9455a";$("nameIn").placeholder="ขอชื่อหน่อยนะ 🥺";return}
+ log("ชื่อ",ses.name);$("h2").textContent="สวัสดี "+ses.name+"! เลือกสิ่งที่ชอบหน่อย 🍰";go("s2")}
+$("n1").onclick=nm;$("nameIn").onkeydown=function(e){if(e.key==="Enter")nm()};
+// ความชอบ
+PREFS.forEach(function(p){var g=document.createElement("div");g.className="grp";g.innerHTML="<b>"+p[0]+"</b>";var c=document.createElement("div");c.className="chips";
+ p[1].forEach(function(o){var b=document.createElement("button");b.className="chip";b.textContent=o;b.onclick=function(){c.querySelectorAll(".chip").forEach(function(x){x.classList.remove("sel")});b.classList.add("sel");log(p[0],o)};c.appendChild(b)});
+ g.appendChild(c);$("prefs").appendChild(g)});
+$("n2").onclick=function(){$("h3").textContent=ses.name+" อยากรู้จักเราไหม? 👀";go("s3")};
+// อยากรู้จักไหม
+var noN=0;
+$("bigYes").onclick=function(){log("อยากรู้จักไหม","อยากรู้จัก 🥰");go("s4")};
+$("maybe").onclick=function(){log("อยากรู้จักไหม","ยังงงๆ อยู่ 🤔");go("s4")};
+$("bf").onclick=function(){log("อยากรู้จักไหม","มีแฟนแล้ว 💍 (จบ)");go("s3b")};
+var NOMSG=["เอ๊ะ จริงเหรอ 🥺","คิดดีๆ อีกทีนะ","ปุ่มนี้เริ่มเล็กลงแล้วนะ…","ปุ่มอยากรู้จักใหญ่ขึ้นอีกแล้ว 👀","กดอีกทีเดียวปุ่มนี้หายไปเลยนะ!"];
+$("noK").onclick=function(){noN++;log("กดไม่อยาก (ครั้งที่ "+noN+")","ไม่อยาก");
+ $("noK").style.transform="scale("+Math.max(0,1-noN*.2)+")";
+ $("bigYes").style.transform="scale("+(1+noN*.28)+")";$("bigYes").style.margin=(noN*7)+"px "+(noN*10)+"px";
+ $("m3").textContent=NOMSG[Math.min(noN-1,4)];
+ if(noN>=5){$("noK").style.display="none";$("m3").textContent="ไม่มีปุ่มไม่อยากแล้วนะ 😆"}};
+// ผ้าคาด
+var PLEA=["อย่าเพิ่งปฏิเสธเลยน้า 🥺","ขอร้องล่ะ แลกกันเถอะนะ 😭","เดี๋ยวเลี้ยงขนมเลย!","ใจร้ายอะ ฮือๆ","กดปุ่มข้างๆ เถอะนะ 🥹","เราจะเสียใจนะ… 💔"],CRY=["😢","😭","🥺","😿","💧"],noT=0;
+function dodge(){var r=$("run"),no=$("no");if(r.style.display!=="block"){var b=no.getBoundingClientRect();r.style.left=b.left+"px";r.style.top=b.top+"px";r.style.display="block";no.style.visibility="hidden"}
+ var w=innerWidth-110,h=innerHeight-90;r.style.left=Math.max(10,Math.random()*w)+"px";r.style.top=Math.max(70,Math.random()*h)+"px";
+ noT++;$("m4").textContent=PLEA[(noT-1)%PLEA.length];$("em4").textContent=CRY[noT%CRY.length];log("พยายามกด No way","พยายาม "+noT+" ครั้ง แต่ปุ่มหนีไป")}
+["pointerenter","touchstart","click"].forEach(function(ev){$("no").addEventListener(ev,function(e){e.preventDefault();dodge()});$("run").addEventListener(ev,function(e){e.preventDefault();dodge()})});
+$("yes").onclick=function(){log("แลกผ้าคาดกันไหม","Yes 😊");$("run").style.display="none";
+ $("win").textContent="ขอบคุณนะ "+ses.name+" 💖 เดี๋ยวนัดวันแลกกันน้า";$("modal").classList.add("on");
+ for(var i=0;i<40;i++){var c=document.createElement("div");c.className="conf";c.textContent=["🎉","✨","💖","🎀","🌸"][i%5];c.style.left=Math.random()*100+"%";c.style.fontSize=(16+Math.random()*16)+"px";c.style.animationDuration=(2+Math.random()*2.5)+"s";c.style.animationDelay=Math.random()*1.2+"s";document.body.appendChild(c);setTimeout(function(){this.remove()}.bind(c),6000)}};
+// ประวัติ
+var from="s0";
+function summary(s){return "📮 คำตอบจากจดหมาย ("+s.time+")\n"+s.log.map(function(l){return l[0]+": "+l[1]}).join("\n")}
+function hist(){var h=$("hist");h.innerHTML="";var a=all.slice().reverse();if(!a.length){h.innerHTML='<div class="it">ยังไม่มีคำตอบเลย 🌱</div>'}
+ a.forEach(function(s){var d=document.createElement("div");d.className="it";var t=document.createElement("b");t.textContent=(s.name||"ไม่ระบุชื่อ")+" · "+s.time;d.appendChild(t);
+  s.log.forEach(function(l){var r=document.createElement("div");r.textContent=l[0]+": "+l[1];d.appendChild(r)});h.appendChild(d)})}
+function openHist(){from=cur;hist();go("sh")}
+$("fab").onclick=openHist;$("seeAns").onclick=function(){$("modal").classList.remove("on");openHist()};
+$("back").onclick=function(){go(from==="sh"?"s0":from)};
+$("share").onclick=function(){var s=all.length?all[all.length-1]:ses,t=summary(s);
+ if(navigator.share){navigator.share({text:t}).catch(function(){})}
+ else if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){$("share").textContent="คัดลอกแล้ว ✅ วางส่งได้เลย"}).catch(function(){})}};
+// QR สำหรับเจ้าของ
+function route(){if(location.hash==="#qr"){go("sq");$("qrBox").innerHTML="";try{new QRCode($("qrBox"),{text:location.href.split("#")[0],width:220,height:220})}catch(e){$("qrBox").textContent=location.href.split("#")[0]}}
+ else if(location.hash==="#history"){openHist()}}
+addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
